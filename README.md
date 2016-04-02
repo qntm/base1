@@ -2,6 +2,8 @@
 
 Base1 encodes arbitrary binary data as a string of repeated "A" characters. With analogy to the [unary numeral system](https://en.wikipedia.org/wiki/Unary_numeral_system), the binary data is encoded in the length of the string. For example, the single byte 0x11 is encoded as the 18-character string "AAAAAAAAAAAAAAAAAA", and a 140-character Tweet filled entirely with "A" characters decodes to the single-byte sequence 0x8B.
 
+Base1 is not the most inefficient possible binary encoding, but it is a positive step in that direction: 1MB of input yields approximately 2<sup>8172</sup>MB of output.
+
 ## Installation
 
 ```bash
