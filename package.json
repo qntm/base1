@@ -1,0 +1,26 @@
+{
+	"name": "base1",
+	"version": "0.0.1",
+	"description": "Convert binary data to Base1",
+	"homepage": "https://github.com/ferno/base1",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/ferno/base1.git"
+	},
+	"main": "index.js",
+	"keywords": [
+		"base64",
+		"base1",
+		"encoding",
+		"decoding",
+		"text",
+		"useless",
+		"silly"
+	],
+	"scripts": {
+		"test": "node test.js"
+	},
+	"dependencies": [],
+	"author": "ferno",
+	"license": "MIT"
+}
