@@ -26,7 +26,7 @@ The Base1 encoding is *not* as simple as taking the binary as a place-value base
 | 3 bytes       | 16,777,216                 | 65,793                   | 16,843,008               |
 | 4 bytes       | 4,294,967,296              | 16,843,009               | 4,311,810,305            |
 | ...           | ...                        | ...                      | ...                      |
-| <var>N</var> bytes | 256<sup><var>N</var></sup> | (256<sup><var>N</var></sup> - 1) / (256 - 1) | (256<sup><var>N</var> + 1</sup> - 1) / (256 - 1) |
+| <var>N</var> bytes | 256<sup><var>N</var></sup> | (256<sup><var>N</var></sup> - 1) / (256 - 1) | (256<sup><var>N</var> + 1</sup> - 1) / (256 - 1) - 1 |
 
 ## Installation
 
