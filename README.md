@@ -1,8 +1,32 @@
 # base1
 
-Base1 encodes arbitrary binary data as a string of repeated "A" characters. With analogy to the [unary numeral system](https://en.wikipedia.org/wiki/Unary_numeral_system), the binary data is encoded in the length of the string. An empty input becomes the empty string. The single byte 0x00 becomes "A", 0x01 becomes "AA" and so on.
+Base1 is encodes arbitrary binary data as a string of repeated "A" characters. With analogy to the [unary numeral system](https://en.wikipedia.org/wiki/Unary_numeral_system), the binary data is encoded in the length of the string. This JavaScript module, `base1`, is the first implementation of the Base1 encoding.
+
+An empty input becomes the empty string. The single byte 0x00 becomes "A". 0x01 becomes "AA". 0x02 becomes "AAA". 0xFF becomes
+
+> AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+(256 As). 0x00 0x00 becomes
+
+> AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+(257 As), and so on.
 
 Base1 is not the most inefficient possible binary encoding, but it is a step in that direction: 1MB of input yields approximately 2<sup>8,388,580</sup>MB of output. (Twice that, if using UTF-16.)
+
+## How it works
+
+The Base1 encoding is *not* as simple as taking the binary as a place-value base 256 number. This would give no way to distinguish buffers with leading null bytes from one another. We have to encode the length of the source buffer as well. We do this by sorting all possible buffers lexicographically and then simply return the index of the buffer in the list.
+
+| Buffer length | Number of possible buffers | Minimum length of output | Maximum length of output |
+| ------------- | -------------------------- | ------------------------ | ------------------------ |
+| 0 bytes       | 1                          | 0                        | 0                        |
+| 1 byte        | 256                        | 1                        | 256                      |
+| 2 bytes       | 65,536                     | 257                      | 65,792                   |
+| 3 bytes       | 16,777,216                 | 65,793                   | 16,843,008               |
+| 4 bytes       | 4,294,967,296              | 16,843,009               | 4,311,810,305            |
+| ...           | ...                        | ...                      | ...                      |
+| <var>N</var> bytes | 256<sup><var>N</var></sup> | (256<sup><var>N</var></sup> - 1) / (256 - 1) | (256<sup><var>N</var> + 1</sup> - 1) / (256 - 1) |
 
 ## Installation
 
@@ -29,16 +53,6 @@ var buf3 = base1.decodeL(l);  // <Buffer 03 c0>
 ### encodeL and decodeL
 
 The methods `encodeL` and `decodeL` map buffers to Base1 string lengths.
-
-| Buffer size | Number of possible inputs | Minimum length of output | Maximum length of output |
-| ----------- | ------------------------- | ------------------------ | ------------------------ |
-| 0 bytes     | 1                         | 0 As ("")                | 0 As ("")                |
-| 1 byte      | 256                       | 1 A ("A")                | 256 As ("AAAA...A")      |
-| 2 bytes     | 65,536                    | 257 As                   | 65,792 As                |
-| 3 bytes     | 16,777,216                | 65,793 As                | 16,843,008 As            |
-| 4 bytes     | 4,294,967,296             | 16,843,009 As            | 4,311,810,305 As         |
-| ...         | ...                       | ...                      | ...                      |
-| <var>N</var> bytes | 256<sup><var>N</var></sup> | (256<sup><var>N</var></sup> - 1) / (256 - 1) As | (256<sup><var>N</var> + 1</sup> - 1) / (256 - 1) As |
 
 The maximum safe integer in JavaScript is [`Number.MAX_SAFE_INTEGER`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER) = 9,007,199,254,740,991, which corresponds to the 7-byte sequence 0x1E 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE. Passing a longer or "greater" buffer (e.g. ending in 0xFF instead) to `encodeL` results in an error; passing 9,007,199,254,740,992 or higher to `decodeL` causes a similar error.
 
