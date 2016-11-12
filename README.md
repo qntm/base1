@@ -61,3 +61,9 @@ The maximum safe integer in JavaScript is [`Number.MAX_SAFE_INTEGER`](https://de
 The method `encode` calls `encodeL` to get a length `l`, then returns a string which is `l` repetitions of "A" in a row. `decode` reverses this process. An empty buffer is mapped to the empty string, 1-byte buffers are mapped to the strings "A" to "AAAAA...A" (256 characters) inclusive, and so on.
 
 Here the upper limits are much lower and possibly platform-dependent. JavaScript specifies no maximum length for a string, although MDN's polyfill for [`String.prototype.repeat`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/repeat) gives an upper limit of 2<sup>28</sup> - 1 = 268,435,455 characters. This is equivalent to the 4-byte sequence 0x0E 0xFE 0xFE 0xFE. Larger or "greater" buffers may raise errors and longer strings may not even be constructible. Note that `base1` performs no explicit checks here; it is assumed that the underlying JavaScript engine will instead.
+
+## Ports
+
+This is the JavaScript implementation of Base1. It has also been ported:
+
+* [Unix shell](https://github.com/girst/base1)
