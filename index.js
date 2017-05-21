@@ -4,14 +4,15 @@
 	E.g. base1.encode(new Buffer([17])) = "AAAAAAAAAAAAAAAAAA".
 */
 
-var base = Math.pow(2, 8);
+var base = 1 << 8;
 
 module.exports  = {
 	/** Encode a buffer as a length `l` */
 	encodeL: function(buf) {
 		// First turn binary data into an integer
 		var l = 0;
-		for(var b of buf) {
+		for(var i = 0; i < buf.length; i++) {
+			var b = buf[i];
 			l *= base;
 			l += b;
 		}
