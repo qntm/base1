@@ -16,7 +16,7 @@ Base1 is not the most inefficient possible binary encoding, but it is a step in 
 
 ## How it works
 
-The Base1 encoding is *not* as simple as taking the binary as a place-value base 256 number. This would give no way to distinguish buffers with leading null bytes from one another. We have to encode the length of the source buffer as well. We do this by sorting all possible buffers lexicographically and then simply return the index of the buffer in the list.
+The Base1 encoding is *not* as simple as taking the binary as a place-value base 256 number. This would give no way to distinguish buffers with leading null bytes from one another. We have to encode the length of the source buffer as well. We do this by sorting all possible buffers by length and then lexicographically, then simply returning the index of the buffer in the list.
 
 | Buffer length | Number of possible buffers | Minimum length of output | Maximum length of output |
 | ------------- | -------------------------- | ------------------------ | ------------------------ |
