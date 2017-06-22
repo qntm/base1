@@ -1,26 +1,28 @@
 {
-	"name": "base1",
-	"version": "0.0.3",
-	"description": "Convert binary data to Base1",
-	"homepage": "https://github.com/qntm/base1",
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/qntm/base1.git"
-	},
-	"main": "index.js",
-	"keywords": [
-		"base64",
-		"base1",
-		"encoding",
-		"decoding",
-		"text",
-		"useless",
-		"silly"
-	],
-	"scripts": {
-		"test": "node test/test.js"
-	},
-	"dependencies": [],
-	"author": "qntm",
-	"license": "MIT"
+  "name": "base1",
+  "version": "0.0.4",
+  "description": "Convert binary data to Base1",
+  "homepage": "https://github.com/qntm/base1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/qntm/base1.git"
+  },
+  "main": "index.js",
+  "keywords": [
+    "base64",
+    "base1",
+    "encoding",
+    "decoding",
+    "text",
+    "useless",
+    "silly"
+  ],
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "author": "qntm",
+  "license": "MIT",
+  "dependencies": {
+    "big-integer": "^1.6.23"
+  }
 }

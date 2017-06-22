@@ -4,17 +4,18 @@
 	E.g. base1.encode(new Buffer([17])) = "AAAAAAAAAAAAAAAAAA".
 */
 
-var base = 1 << 8;
+var bigInteger = require("big-integer");
+
+var base = bigInteger(1 << 8);
 
 module.exports  = {
 	/** Encode a buffer as a length `l` */
 	encodeL: function(buf) {
 		// First turn binary data into an integer
-		var l = 0;
+		var l = bigInteger(0);
 		for(var i = 0; i < buf.length; i++) {
 			var b = buf[i];
-			l *= base;
-			l += b;
+			l = l.times(base).plus(b);
 		}
 
 		// Next we need to determine the block.
@@ -22,18 +23,18 @@ module.exports  = {
 		// Binary of length 1 byte gives Base1 of length 1 ("A") to 256 inclusive
 		// Binary of length 2 bytes gives Base1 of length 257 to 65792 inclusive
 		// etc.
-		var binaryLength = 0, blockSize = Math.pow(base, binaryLength);
+		var binaryLength = 0, blockSize = base.pow(binaryLength);
 		while(binaryLength < buf.length) {
-			l += blockSize;
+			l = l.plus(blockSize);
 			binaryLength++;
-			blockSize *= base;
+			blockSize = blockSize.times(base);
 		}
 
-		if(l > Number.MAX_SAFE_INTEGER) {
-			throw new Error("Can't safely encode this buffer as a JavaScript number without losing information.");
+		if(l.lesserOrEquals(Number.MAX_SAFE_INTEGER)) {
+			return l.toJSNumber();
 		}
 
-		return l;
+		return l.toString(10);
 	},
 
 	encode: function(buf) {
@@ -42,9 +43,11 @@ module.exports  = {
 
 	/** Operates on a length `l` */
 	decodeL: function(l) {
-		if(l > Number.MAX_SAFE_INTEGER) {
+		if(typeof l === 'number' && l > Number.MAX_SAFE_INTEGER) {
+			// Apparently `bigInteger` does not preserve all the decimal digits!
 			throw new Error("Can't safely decode this JavaScript number to a buffer without losing information.");
 		}
+		l = bigInteger(l);
 
 		// First we need to work out the length in bytes of the original binary.
 		// Base1 of length 0 ("") means binary is 0 bytes long.
@@ -52,11 +55,11 @@ module.exports  = {
 		// Base1 of length 257 to 65792 inclusive means binary is 2 bytes long.
 		// Base1 of length 65793 to 16843008 inclusive means binary is 3 bytes long.
 		// etc.
-		var binaryLength = 0, blockSize = Math.pow(base, binaryLength);
-		while(l >= blockSize) {
-			l -= blockSize;
+		var binaryLength = 0, blockSize = base.pow(binaryLength);
+		while(l.greaterOrEquals(blockSize)) {
+			l = l.minus(blockSize);
 			binaryLength++;
-			blockSize *= base;
+			blockSize = blockSize.times(base);
 		}
 
 		// `l` is now the offset into the block, a number from 0 to
@@ -64,10 +67,9 @@ module.exports  = {
 		// number now.
 		var buf = new Buffer(binaryLength);
 		for(var byteNum = binaryLength - 1; byteNum >= 0; byteNum--) {
-			var b = l & (base - 1);
-			buf[byteNum] = b;
-			l -= b;
-			l /= base;
+			var b = l.mod(base);
+			buf[byteNum] = b.toJSNumber();
+			l = l.minus(b).divide(base);
 		}
 		return buf;
 	},

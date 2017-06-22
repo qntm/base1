@@ -25,19 +25,22 @@ console.log(base1.decodeL(16843009).equals(new Buffer([0,   0,   0,   0])));
 
 // Edge cases for encodeL and decodeL
 console.log(base1.encodeL(new Buffer([0x1E, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE])) === Number.MAX_SAFE_INTEGER);
-try {
-	base1.encodeL(new Buffer([0x1E, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFF]));
-	console.log(false);
-} catch(e) {
-	console.log(true);
-}
+console.log(base1.encodeL(new Buffer([0x1E, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE])) === 9007199254740991);
+console.log(base1.encodeL(new Buffer([0x1E, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFF])) === "9007199254740992");
+
 console.log(base1.decodeL(Number.MAX_SAFE_INTEGER).equals(new Buffer([0x1E, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE])));
+console.log(base1.decodeL(9007199254740991).equals(new Buffer([0x1E, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE])));
+console.log(base1.decodeL("9007199254740992").equals(new Buffer([0x1E, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFF])));
 try {
-	base1.decodeL(Number.MAX_SAFE_INTEGER + 1);
+	base1.decodeL(Number.MAX_VALUE);
 	console.log(false);
 } catch(e) {
 	console.log(true);
 }
+
+console.log(base1.decodeL("0").equals(new Buffer([])));
+console.log(base1.decodeL(base1.encodeL(Buffer.alloc(1000, 1))).equals(Buffer.alloc(1000, 1)));
+console.log(base1.decodeL(base1.encodeL(Buffer.alloc(10000, 1))).equals(Buffer.alloc(10000, 1)));
 console.log();
 
 // encode, decode
