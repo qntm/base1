@@ -52,17 +52,20 @@ var buf3 = base1.decodeL(l);  // <Buffer 03 c0>
 
 ### base1.encodeL(buf)
 
-Input a `Buffer`. Returns a Base1 string length (i.e. a non-negative integer). If this number is larger than `Number.MAX_SAFE_INTEGER`, returns a string containing its decimal digits. The first buffer for which this happens is the 7-byte sequence 0x1E 0xFE 0xFE 0xFE 0xFE 0xFE 0xFF, which returns the string `"9007199254740992"`.
+Input a `Buffer`. Returns a Base1 string length (i.e. a non-negative integer). If this number cannot be represented as a JavaScript number, which is increasingly likely as buffer length increases, returns a string containing its decimal digits.
 
-### base1.decodeL(l)
-
-Take a Base1 string length in the form of a non-negative integer less than `Number.MAX_SAFE_INTEGER`, a non-negative integer expressed as a decimal string, or a `big-integer` object and return the `Buffer` it represents.
+* The first buffer for which a string is returned is the 7-byte sequence 0x1E 0xFE 0xFE 0xFE 0xFE 0xFF 0x00, which returns the string `"9007199254740993"`.
+* The last buffer for which a number is returned is the 128-byte sequence 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xF6 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFF 0x00, which returns `Number.MAX_VALUE` = 2<sup>1024</sup> - 2<sup>971</sup> = 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858369.
 
 ### base1.encode(buf)
 
-Encode a `Buffer` as a Base1 string. This method calls `base1.encodeL` to get a length `l` and then returns a string which is `l` repetitions of "A" in a row.
+Encodes a `Buffer` as a Base1 string. This method calls `base1.encodeL` to get a length `l` and then returns a string which is `l` repetitions of "A" in a row.
 
 JavaScript specifies no maximum length for a string, although MDN's polyfill for [`String.prototype.repeat`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/repeat) gives an upper limit of 2<sup>28</sup> - 1 = 268,435,455 characters. This is equivalent to the 4-byte sequence 0x0E 0xFE 0xFE 0xFE. Buffers which are longer or lexicographically greater than this may cause errors in your JavaScript engine.
+
+### base1.decodeL(l)
+
+Take a Base1 string length in the form of a non-negative integer, a non-negative integer expressed as a decimal string or a `big-integer` object and return the `Buffer` it represents.
 
 ### base1.decode(str)
 

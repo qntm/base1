@@ -30,8 +30,9 @@ module.exports  = {
 			blockSize = blockSize.times(base);
 		}
 
-		if(l.lesserOrEquals(Number.MAX_SAFE_INTEGER)) {
-			return l.toJSNumber();
+		var number = l.toJSNumber(); // This may lose information.
+		if (bigInteger(number.toString(2), 2).equals(l)) {
+			return number;
 		}
 
 		return l.toString(10);
@@ -44,10 +45,12 @@ module.exports  = {
 	/** Operates on a length `l` */
 	decodeL: function(l) {
 		if(typeof l === 'number' && l > Number.MAX_SAFE_INTEGER) {
-			// Apparently `bigInteger` does not preserve all the decimal digits!
-			throw new Error("Can't safely decode this JavaScript number to a buffer without losing information.");
+			// Apparently `bigInteger` does not preserve all the decimal digits! So
+			// use this hack at construction time
+			l = bigInteger(l.toString(2), 2);
+		} else {
+			l = bigInteger(l);
 		}
-		l = bigInteger(l);
 
 		// First we need to work out the length in bytes of the original binary.
 		// Base1 of length 0 ("") means binary is 0 bytes long.

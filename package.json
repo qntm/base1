@@ -1,6 +1,6 @@
 {
   "name": "base1",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "Convert binary data to Base1",
   "homepage": "https://github.com/qntm/base1",
   "repository": {
