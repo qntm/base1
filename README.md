@@ -37,39 +37,53 @@ npm install base1
 ## Usage
 
 ```js
-var base1 = require("base1");
+import { encodeL, encode, decodeL, decode } from 'base1'
 
-var buf = new Buffer([0x03, 0xC0]); 
+const uint8Array = Uint8Array.from([0x03, 0xC0])
 
-var l   = base1.encodeL(buf); // 1217
-var str = base1.encode(buf);  // "AAAAAAAAAAAA...AA", string is 1,217 characters long
+const l   = encodeL(uint8Array) // 1217n
+const str = encode(uint8Array)  // "AAAAAAAAAAAA...AA", string is 1,217 characters long
 
-var buf2 = base1.decode(str); // <Buffer 03 c0>
-var buf3 = base1.decodeL(l);  // <Buffer 03 c0>
+const uint8Array2 = decode(str) // Uint8Array [ 3, 192 ]
+const uint8Array3 = decodeL(l)  // Uint8Array [ 3, 192 ]
+```
+
+### In the browser
+
+Load this file in the browser to gain access to a `base1` global.
+
+```html
+<script src="https://unpkg.com/base1" crossorigin></script>
+<script>
+  console.log(base1.decode('AAAAAAAAAAAAAAAAAAAAAAAAAA'))
+</script>
 ```
 
 ## API
 
-### base1.encodeL(buf)
+`base1` accepts and returns `Uint8Array`s. Note that every Node.js `Buffer` is a `Uint8Array`. A `Uint8Array` can be converted to a Node.js `Buffer` like so:
 
-Input a `Buffer`. Returns a Base1 string length (i.e. a non-negative integer). If this number cannot be represented as a JavaScript number, which is increasingly likely as buffer length increases, returns a string containing its decimal digits.
+```js
+const buffer = Buffer.from(uint8Array.buffer, uint8Array.byteOffset, uint8Array.byteLength)
+```
 
-* The first buffer for which a string is returned is the 7-byte sequence 0x1E 0xFE 0xFE 0xFE 0xFE 0xFF 0x00, which returns the string `"9007199254740993"`.
-* The last buffer for which a number is returned is the 128-byte sequence 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xF6 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE 0xFF 0x00, which returns `Number.MAX_VALUE` = 2<sup>1024</sup> - 2<sup>971</sup> = 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858369.
+### encodeL(uint8Array)
 
-### base1.encode(buf)
+Input a `Uint8Array`. Returns a Base1 string length, in the form of a BigInt.
 
-Encodes a `Buffer` as a Base1 string. This method calls `base1.encodeL` to get a length `l` and then returns a string which is `l` repetitions of "A" in a row.
+### encode(uint8Array)
 
-JavaScript specifies no maximum length for a string, although MDN's polyfill for [`String.prototype.repeat`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/repeat) gives an upper limit of 2<sup>28</sup> - 1 = 268,435,455 characters. This is equivalent to the 4-byte sequence 0x0E 0xFE 0xFE 0xFE. Buffers which are longer or lexicographically greater than this may cause errors in your JavaScript engine.
+Encodes a `Uint8Array` as a Base1 string. This method calls `base1.encodeL` to get a length `l` and then returns a string which is `l` repetitions of "A" in a row.
 
-### base1.decodeL(l)
+JavaScript does not specify, nor does `base1` enforce, a maximum length for a string. However, MDN's polyfill for [`String.prototype.repeat`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/repeat) gives an upper limit of 2<sup>28</sup> - 1 = 268,435,455 characters. This is equivalent to the 4-byte sequence 0x0E 0xFE 0xFE 0xFE. Buffers which are longer or lexicographically greater than this may cause errors in your JavaScript engine.
 
-Take a Base1 string length in the form of a non-negative integer, a non-negative integer expressed as a decimal string or a `big-integer` object and return the `Buffer` it represents.
+### decodeL(l)
 
-### base1.decode(str)
+Take a Base1 string length in the form of a BigInt and return a `Uint8Array` containing the data which it represents.
 
-Decode a Base1 string and return the `Buffer` it represents.
+### decode(str)
+
+Decode a Base1 string and return a `Uint8Array` containing the data which it represents.
 
 ## Ports
 
