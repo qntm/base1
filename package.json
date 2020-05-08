@@ -9,7 +9,6 @@
   },
   "module": "dist/es6/base1.js",
   "main": "dist/cjs/base1.js",
-  "browser": "dist/iife/base1.js",
   "keywords": [
     "base64",
     "base1",

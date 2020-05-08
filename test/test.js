@@ -39,6 +39,11 @@ describe('base1', () => {
     })
 
     describe('decodeL', () => {
+      it('wants a non-negative BigInt', () => {
+        expect(() => decodeL(8)).toThrowError('This is not a non-negative BigInt')
+        expect(() => decodeL(-1n)).toThrowError('This is not a non-negative BigInt')
+      })
+
       it('works', () => {
         expect(decodeL(0n)).toEqual(Uint8Array.from([]))
         expect(decodeL(1n)).toEqual(Uint8Array.from([0]))

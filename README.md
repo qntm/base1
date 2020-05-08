@@ -53,7 +53,7 @@ const uint8Array3 = decodeL(l)  // Uint8Array [ 3, 192 ]
 Load this file in the browser to gain access to a `base1` global.
 
 ```html
-<script src="https://unpkg.com/base1" crossorigin></script>
+<script src="https://unpkg.com/base1@1/dist/iife/base1.js" crossorigin></script>
 <script>
   console.log(base1.decode('AAAAAAAAAAAAAAAAAAAAAAAAAA'))
 </script>

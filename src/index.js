@@ -23,11 +23,15 @@ export const encode = uint8Array => {
 }
 
 export const decodeL = l => {
+  if (typeof l !== 'bigint' || l < 0n) {
+    throw Error('This is not a non-negative BigInt')
+  }
+
   const bytes = []
   while (l > 0n) {
     l -= 1n
     bytes.push(Number(l % 256n))
-    l /= 256n
+    l /= 256n // rounds down
   }
 
   bytes.reverse()
