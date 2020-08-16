@@ -10,7 +10,11 @@ cache:
   directories:
     # we also need to cache folder with Cypress binary
     - ~/.cache
+install:
+  - npm install
 script:
+  - npx cypress cache path
+  - npx cypress cache list
   - npm run test
   - npm run build
   - npm run test-built
