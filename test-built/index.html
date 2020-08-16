@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+		<script crossorigin src="../dist/iife/base1.js"></script>
+    <script>
+      window.addEventListener('load', () => {
+				const encoded = base1.encode(new TextEncoder('utf-8').encode('yo'))
+				const decoded = new TextDecoder('utf-8').decode(base1.decode(encoded))
+				document.querySelector('.root').appendChild(document.createTextNode(decoded))
+      })
+    </script>
+  </head>
+  <body>
+    <div class="root"></div>
+  </body>
+</html>
