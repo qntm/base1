@@ -21,6 +21,7 @@
   "scripts": {
     "build": "rollup -c rollup.config.js",
     "jest": "jest",
+    "postpublish": "npm version patch && git push",
     "rollup": "rollup",
     "standard": "standard",
     "test": "standard && jest --coverage",
