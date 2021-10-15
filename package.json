@@ -1,57 +1,35 @@
 {
   "name": "base1",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "Convert binary data to Base1",
   "homepage": "https://github.com/qntm/base1",
   "repository": {
     "type": "git",
     "url": "git://github.com/qntm/base1.git"
   },
-  "module": "dist/es6/base1.js",
-  "main": "dist/cjs/base1.js",
+  "type": "module",
+  "main": "src/index.js",
   "keywords": [
     "base64",
-    "base1",
     "encoding",
     "decoding",
     "text",
     "useless",
-    "silly"
+    "inefficient",
+    "A"
   ],
   "scripts": {
-    "build": "rollup -c rollup.config.js",
-    "jest": "jest",
-    "rollup": "rollup",
+    "mocha": "c8 --100 mocha",
+    "postpublish": "npm version patch && git push",
     "standard": "standard",
-    "test": "standard && jest --coverage",
-    "test-built": "npm run test-built-cjs && npm run test-built-es6 && npm run test-built-iife",
-    "test-built-cjs": "node test-built/cjs.js",
-    "test-built-es6": "babel-node test-built/es6.js",
-    "test-built-iife": "start-server-and-test \"node test-built/server.js\" http://localhost:3000/test-built/index.html \"cypress run --spec test-built/iife.js\""
+    "test": "npm run standard && npm run mocha"
   },
   "author": "qntm",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "@babel/node": "^7.10.5",
-    "@babel/preset-env": "^7.7.7",
-    "cypress": "^8.3.1",
-    "express": "^4.17.1",
-    "glob": "^7.1.6",
-    "jest": "^27.0.3",
-    "rollup": "^2.26.0",
-    "standard": "^16.0.1",
-    "start-server-and-test": "^1.11.3"
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ]
-  },
-  "standard": {
-    "ignore": "dist"
-  },
-  "files": [
-    "dist/**/*"
-  ]
+    "c8": "^7.10.0",
+    "mocha": "^9.1.3",
+    "standard": "^16.0.1"
+  }
 }
