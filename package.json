@@ -1,21 +1,21 @@
 {
   "name": "base1",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "Convert binary data to Base1",
   "homepage": "https://github.com/qntm/base1",
   "repository": {
     "type": "git",
     "url": "git://github.com/qntm/base1.git"
   },
-  "module": "dist/es6/base1.js",
-  "main": "dist/cjs/base1.js",
+  "main": "src/index.js",
   "keywords": [
     "base64",
-    "base1",
     "encoding",
     "decoding",
     "text",
-    "useless"
+    "useless",
+    "inefficient",
+    "A"
   ],
   "scripts": {
     "mocha": "c8 --100 mocha",
