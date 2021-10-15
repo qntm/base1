@@ -48,17 +48,6 @@ const uint8Array2 = decode(str) // Uint8Array [ 3, 192 ]
 const uint8Array3 = decodeL(l)  // Uint8Array [ 3, 192 ]
 ```
 
-### In the browser
-
-Load this file in the browser to gain access to a `base1` global.
-
-```html
-<script src="https://unpkg.com/base1@1/dist/iife/base1.js" crossorigin></script>
-<script>
-  console.log(base1.decode('AAAAAAAAAAAAAAAAAAAAAAAAAA'))
-</script>
-```
-
 ## API
 
 `base1` accepts and returns `Uint8Array`s. Note that every Node.js `Buffer` is a `Uint8Array`. A `Uint8Array` can be converted to a Node.js `Buffer` like so:

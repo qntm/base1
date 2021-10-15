@@ -1,10 +1,7 @@
-/** Tests for base65536, ensure strings survive round trips, etc. */
-
-/* eslint-env jest */
-/* global BigInt */
+/* eslint-env mocha */
 
 import fs from 'fs'
-import { encodeL, encode, decodeL, decode } from '../src/index'
+import { encodeL, encode, decodeL, decode } from '../src/index.js'
 
 describe('base1', () => {
   describe('encodeL and decodeL', () => {
