@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2.0.0
+
+* Dropped support for Node.js prior to 14.
+* Dropped support for CommonJS modules. `base1` is now available solely as ES modules.
+* There is no longer an IIFE for using in the browser... you can use browser-native ES module loading for this purpose.
+
 ## 1.x.x
 
 `base1` now operates on `Uint8Array`s, not `Buffer`s.

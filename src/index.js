@@ -4,8 +4,6 @@
   E.g. base1.encode(new Buffer([17])) = "AAAAAAAAAAAAAAAAAA".
 */
 
-/* global BigInt */
-
 export const encodeL = uint8Array =>
   uint8Array.reduce((l, b) => l * 256n + BigInt(b) + 1n, 0n)
 
