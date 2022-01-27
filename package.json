@@ -1,6 +1,6 @@
 {
   "name": "base1",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Convert binary data to Base1",
   "homepage": "https://github.com/qntm/base1",
   "repository": {
@@ -29,7 +29,7 @@
   "dependencies": {},
   "devDependencies": {
     "c8": "^7.10.0",
-    "mocha": "^9.1.3",
+    "mocha": "^9.2.0",
     "standard": "^16.0.1"
   },
   "files": [
