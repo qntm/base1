@@ -79,3 +79,4 @@ Decode a Base1 string and return a `Uint8Array` containing the data which it rep
 This is a JavaScript implementation of the Base1 encoding. It has also been ported:
 
 * [C](https://github.com/girst/base1)
+* [Rust](https://crates.io/crates/base1)
