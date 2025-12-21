@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.0.0
+
+* Dropped support for Node.js prior to 20.
+
 ## 2.0.0
 
 * Dropped support for Node.js prior to 14.
