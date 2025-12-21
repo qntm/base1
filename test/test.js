@@ -1,7 +1,7 @@
-/* eslint-env mocha */
+import assert from 'node:assert'
+import fs from 'node:fs'
+import { describe, it } from 'node:test'
 
-import assert from 'assert'
-import fs from 'fs'
 import { encodeL, encode, decodeL, decode } from '../src/index.js'
 
 describe('base1', () => {
