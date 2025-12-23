@@ -19,7 +19,7 @@
     "A"
   ],
   "scripts": {
-    "unit": "c8 --100 node --test",
+    "unit": "node --test --experimental-test-coverage",
     "standard": "standard",
     "tag": "node -e \"require('child_process').spawn('git', ['tag', `v${require('./package.json').version}`], { stdio: 'inherit' })\"",
     "tag-and-publish": "npm run tag && git push --tags && npm publish && npm version patch --no-git-tag-version && git add . && git commit -m \"Bump patch\" && git push",
@@ -29,7 +29,6 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "c8": "^10.1.2",
     "standard": "^17.0.0"
   },
   "files": [
