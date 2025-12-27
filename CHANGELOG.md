@@ -2,7 +2,7 @@
 
 ## 3.0.0
 
-* Dropped support for Node.js prior to 20.
+* Dropped support for Node.js prior to 24.
 
 ## 2.0.0
 
