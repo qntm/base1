@@ -80,3 +80,4 @@ This is a JavaScript implementation of the Base1 encoding. It has also been port
 
 * [C](https://github.com/girst/base1)
 * [Rust](https://crates.io/crates/base1)
+* [Python](https://pypi.org/project/base-one/)
