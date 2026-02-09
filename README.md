@@ -60,7 +60,7 @@ const buffer = Buffer.from(uint8Array.buffer, uint8Array.byteOffset, uint8Array.
 
 Input a `Uint8Array`. Returns a Base1 string length, in the form of a BigInt.
 
-### encode(uint8Array)****
+### encode(uint8Array)
 
 Encodes a `Uint8Array` as a Base1 string. This method calls `base1.encodeL` to get a length `l` and then returns a string which is `l` repetitions of "A" in a row.
 
