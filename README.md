@@ -60,11 +60,11 @@ const buffer = Buffer.from(uint8Array.buffer, uint8Array.byteOffset, uint8Array.
 
 Input a `Uint8Array`. Returns a Base1 string length, in the form of a BigInt.
 
-### encode(uint8Array)
+### encode(uint8Array)****
 
 Encodes a `Uint8Array` as a Base1 string. This method calls `base1.encodeL` to get a length `l` and then returns a string which is `l` repetitions of "A" in a row.
 
-JavaScript does not specify, nor does `base1` enforce, a maximum length for a string. However, MDN's polyfill for [`String.prototype.repeat`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/repeat) gives an upper limit of 2<sup>28</sup> - 1 = 268,435,455 characters. This is equivalent to the 4-byte sequence 0x0E 0xFE 0xFE 0xFE. Buffers which are longer or lexicographically greater than this may cause errors in your JavaScript engine.
+The maximum length of a string depends on the JavaScript environment. JavaScript [specifies a maximum string length of 2<sup>53</sup> - 1](https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-ecmascript-language-types-string-type) = 9,007,199,254,740,991 elements. This is equivalent to the 7-byte sequence **0x1E 0xFE 0xFE 0xFE 0xFE 0xFE 0xFE**. However, a 9-quadrillion-element string would (naively) occupy 16,384TB of memory, so in practice the limit is significantly lower. For example, Node.js 24.12.0's implementation of `String.prototype.repeat` throws an exception if the output string will be longer than 2<sup>29</sup> - 24 = 536,870,888 elements. This is equivalent to the 4-byte sequence **0x1E 0xFE 0xFE 0xE7**. Input byte sequences which are longer or lexicographically greater than this will cause a `RangeError` to be thrown.
 
 ### decodeL(l)
 
