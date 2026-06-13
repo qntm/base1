@@ -1,46 +1,15 @@
 /**
-  Converts binary data to and from Base1, whereby the original binary is
-  converted to a BigInt `l` and then a string of `l` repetitions of "A".
-  E.g. base1.encode(new Buffer([17])) = "AAAAAAAAAAAAAAAAAA".
-*/
+ * Base1 — Binary encoding inspired by unary numbers.
+ *
+ * Converts binary data to and from Base1, whereby the original binary is
+ * converted to a BigInt `l` and then a string of `l` repetitions of "A".
+ *
+ * @example
+ * base1.encode(Uint8Array.from([17])) // => "AAAAAAAAAAAAAAAAAA"
+ * base1.decode("AAAAAAAAAAAAAAAAAA")  // => Uint8Array [17]
+ *
+ * @module base1
+ */
 
-export const encodeL = uint8Array =>
-  uint8Array.reduce((l, b) => l * 256n + BigInt(b) + 1n, 0n)
-
-export const encode = uint8Array => {
-  const l = encodeL(uint8Array)
-
-  // String.prototype.repeat demands a number, not a BigInt
-  const number = Number(l) // This can lose information
-  if (BigInt(number) !== l) {
-    throw Error('Could not compute the Base1 output length as a number')
-  }
-
-  // This could still throw, JS specifies no string length limit
-  return 'A'.repeat(number)
-}
-
-export const decodeL = l => {
-  if (typeof l !== 'bigint' || l < 0n) {
-    throw Error('This is not a non-negative BigInt')
-  }
-
-  const bytes = []
-  while (l > 0n) {
-    l -= 1n
-    bytes.push(Number(l % 256n))
-    l /= 256n // rounds down
-  }
-
-  bytes.reverse()
-  return Uint8Array.from(bytes)
-}
-
-export const decode = base1 => {
-  // TODO: performance?
-  if (!/^A*$/.test(base1)) {
-    throw Error('This is not a valid Base1 string')
-  }
-
-  return decodeL(BigInt(base1.length))
-}
+export { encodeL, encode } from './encode.js'
+export { decodeL, decode } from './decode.js'
